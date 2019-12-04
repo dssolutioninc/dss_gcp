@@ -82,6 +82,7 @@ resource "google_storage_bucket" "sample-bucket" {
   }
 }
 ```
+「outputs.tf」スクリプトは今回使わない。
 
 #### 2.2　　メインスクリプト
 
