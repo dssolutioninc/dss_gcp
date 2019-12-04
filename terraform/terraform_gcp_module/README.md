@@ -7,7 +7,7 @@
 Terraformは初めての方はこの記事（[Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)）もご覧ください。
 
 
-## 1. 　Terraformスクリプト作成
+## 1.　　Terraformスクリプト作成
 この記事では、GKEクラスタ、ストレージBucket、Pubsub Topic＆Subscriptionを例としてデプロイスクリプトを作成します。
 
 Terraformスクリプトフォルダの構成
@@ -50,8 +50,219 @@ terraform_script_folder
 - dev.tfvars、staging.tfvars、prod.tfvarsのファイル：各種環境によるパラメータ設定ファイル
 
 
-## 2.  環境別にデプロイ実施
-#### 2.1  開発環境
+## 2.　　Terraformスクリプト作成
+#### 2.1　　共有モジュールスクリプト（_modules）
+
+_modules/storage/main.tf
+
+```sh
+resource "google_storage_bucket" "sample-bucket" {
+  name          = var.name
+  location      = var.region
+  storage_class = var.storage_class
+
+  labels = {
+    app = var.app
+    env = var.env
+  }
+}
+```
+
+_modules/storage/variables.tf
+
+```sh
+resource "google_storage_bucket" "sample-bucket" {
+  name          = var.name
+  location      = var.region
+  storage_class = var.storage_class
+
+  labels = {
+    app = var.app
+    env = var.env
+  }
+}
+```
+
+#### 2.2　　メインスクリプト
+
+main.tf
+
+```sh
+terraform {
+  required_version = "~>0.12.14"
+}
+
+## project ##
+provider "google" {
+  project     = var.project
+  region      = var.region
+}
+
+## storage buckets ##
+module "storage" {
+  source = "./_modules/storage"
+
+  name   = var.storage_name
+  region = var.region
+  app    = var.app
+  env    = var.env
+}
+
+## cluster ##
+module "cluster" {
+  source = "./_modules/cluster"
+
+  name  = var.cluster_name
+  zone  = var.zone
+  node_count = var.node_count
+  initial_node_count = var.initial_node_count
+  node_pool_name = var.node_pool_name
+  node_machine_type = var.node_machine_type
+}
+
+## topic & subscription ##
+## the first one
+module "the-first-topic" {
+  source = "./_modules/pubsub"
+
+  topic_name  = var.first_topic_name
+  subscription_name  = var.first_subscription_name
+
+  app    = var.app
+  env    = var.env
+}
+
+## the second one
+module "the-second-topic" {
+  source = "./_modules/pubsub"
+
+  topic_name  = var.second_topic_name
+  subscription_name  = var.second_subscription_name
+
+  app    = var.app
+  env    = var.env
+}
+```
+
+variables.tf
+
+```sh
+## global variables
+variable "project" {}
+variable "app" {}
+variable "env" {}
+variable "region" {
+  default = "asia-northeast1"
+}
+variable "zone" {
+  default = "asia-northeast1-b"
+}
+
+## storage variables
+variable "storage_name" {}
+
+## cluster variables
+variable "cluster_name" {}
+variable "node_count" {}
+variable "initial_node_count" {}
+variable "node_pool_name" {}
+variable "node_machine_type" {}
+
+## pubsub variables
+variable "first_topic_name" {}
+variable "first_subscription_name" {}
+variable "second_topic_name" {}
+variable "second_subscription_name" {}
+```
+
+#### 2.3　　環境ごとパラメータファイル
+
+開発環境（dev.tfvars）
+
+```sh
+## global variables
+project = "project-dev"
+env 	= "dev"
+app 	= "sample-app"
+region 	= "asia-northeast1"
+zone 	= "asia-northeast1-b"
+
+
+## storage variables
+storage_name = "dev_private_bucket_abc123"
+
+## cluster variables
+cluster_name        = "sample-cluster"
+initial_node_count  = 1
+node_count          = 2
+node_pool_name      = "sample-node-pool"
+node_machine_type   = "n1-standard-1"
+
+## pubsub variables
+first_topic_name            = "sample-first-topic"
+first_subscription_name     = "sample-first-topic-sub"
+second_topic_name           = "sample-second-topic"
+second_subscription_name    = "sample-second-topic-sub"
+```
+
+ステージング環境（staging.tfvars）
+
+```sh
+## global variables
+project = "project-staging"
+env 	= "staging"
+app 	= "sample-app"
+region 	= "asia-northeast1"
+zone 	= "asia-northeast1-b"
+
+
+## storage variables
+storage_name = "staging_private_bucket_abc123"
+
+## cluster variables
+cluster_name        = "sample-cluster"
+initial_node_count  = 1
+node_count          = 2
+node_pool_name      = "sample-node-pool"
+node_machine_type   = "n1-standard-1"
+
+## pubsub variables
+first_topic_name            = "sample-first-topic"
+first_subscription_name     = "sample-first-topic-sub"
+second_topic_name           = "sample-second-topic"
+second_subscription_name    = "sample-second-topic-sub"
+```
+
+本番環境（prod.tfvars）
+
+```sh
+## global variables
+project = "project-prod"
+env 	= "prod"
+app 	= "sample-app"
+region 	= "asia-northeast1"
+zone 	= "asia-northeast1-b"
+
+
+## storage variables
+storage_name = "prod_private_bucket_abc123"
+
+## cluster variables
+cluster_name        = "sample-cluster"
+initial_node_count  = 1
+node_count          = 2
+node_pool_name      = "sample-node-pool"
+node_machine_type   = "n1-standard-1"
+
+## pubsub variables
+first_topic_name            = "sample-first-topic"
+first_subscription_name     = "sample-first-topic-sub"
+second_topic_name           = "sample-second-topic"
+second_subscription_name    = "sample-second-topic-sub"
+```
+
+## 3.　　環境別にデプロイ実施
+#### 3.1　　開発環境
 
 ```sh
 # 専用の環境変数にCredentialファイルを設定する
@@ -65,7 +276,7 @@ terraform plan -var-file="dev.tfvars" -state=./dev/terraform.tfstate
 terraform apply -var-file="dev.tfvars" -state=./dev/terraform.tfstate
 ```
 
-#### 2.2  ステージング環境
+#### 3.2  ステージング環境
 
 ```sh
 # 専用の環境変数にCredentialファイルを設定する
@@ -79,7 +290,7 @@ terraform plan -var-file="staging.tfvars" -state=./staging/terraform.tfstate
 terraform apply -var-file="staging.tfvars" -state=./staging/terraform.tfstate
 ```
 
-#### 2.3  本番環境
+#### 3.3  本番環境
 
 ```sh
 # 専用の環境変数にCredentialファイルを設定する
