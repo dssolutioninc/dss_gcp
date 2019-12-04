@@ -22,7 +22,7 @@ Terraformを使っている時に、GCPにアクセス用のサービスアカ�
 ## 1. 　サービスアカウントを発行して、Terraform稼働環境に設定
 サービスアカウントのaccount.jsonを準備して、配置すること。
 
-####　　Terraform専用のサービスアカウント作成
+#### 　Terraform専用のサービスアカウント作成
 ```sh
 # set work project
 gcloud config set project [PROJECT_ID]
@@ -32,7 +32,7 @@ gcloud iam service-accounts create terraform-serviceaccount \
   --display-name "Account for Terraform"
 ```
 
-####　　サービスアカウントのCredentialファイルを作成して、Terraform稼働環境に設定
+#### 　サービスアカウントのCredentialファイルを作成して、Terraform稼働環境に設定
 ```sh
 # create service account's credential file
 gcloud iam service-accounts keys create {{path_to_save/account.json}} \
@@ -131,11 +131,14 @@ gcloud iam roles update terraform_role --project [PROJECT_ID] \
 
 
 本記事の利用ソースコードはこちら
-[https://github.com/itdevsamurai/gcp/tree/master/terraform_permission_assignment](https://github.com/itdevsamurai/gke/tree/master/terraform_gcp_module)
+[https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment](https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment)
 
 
 最後まで読んで頂き、どうも有難う御座います!
 DevSamurai 橋本
 
 
-関連記事：[Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)
+関連記事：  
+[Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)
+[Terraformスクリプトをモジュール化して、GCPの複数環境に適用](https://qiita.com/devs_hd/items/491b72dec2d4c077d977)
+
