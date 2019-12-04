@@ -1,0 +1,16 @@
+title: "Terraform Account Role"
+description: "Terraform Script Running Script Role"
+stage: "ALPHA"
+includedPermissions:
+- iam.serviceAccounts.actAs
+- iam.serviceAccounts.get
+- iam.serviceAccounts.list
+- resourcemanager.projects.get
+- resourcemanager.projects.list
+- storage.buckets.create
+- storage.buckets.update
+- storage.buckets.delete
+- storage.buckets.list
+- storage.buckets.get
+- storage.objects.list
+- storage.objects.get
