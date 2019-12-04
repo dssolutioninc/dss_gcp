@@ -1,10 +1,10 @@
 # Terraform用のGCPサービスアカウントの権限設定方法
 ※Terraformのv0.12.16バージョンを使っています。（この記事記載時点の最新バージョンです）
 
-本記事の目的
-・Terraform用のGCPサービスアカウント権限設定方法について各種のパターンをご紹介する
+*本記事の目的
+Terraform用のGCPサービスアカウント権限設定方法について各種のパターンをご紹介する*
 
-Terraformは初めての方はこの記事（[Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)）もご覧ください。
+Terraform初めての方はこの記事（[Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)）もご覧ください。
 
 Terraformを使っている時に、GCPにアクセス用のサービスアカウントはどのぐらいまでの権限を付与するのかよく考慮されると思っています。
 選択肢は「基本の役割」（Primitive roles）、「事前定義された役割」（Predefined roles）、「カスタムの役割」（Custom roles）となっています。
@@ -108,8 +108,8 @@ includedPermissions:
 - storage.objects.list
 - storage.objects.get
 ```
-この定義はサービスアカウントユーザー（Service Account User）権限とストレージのバケツ作成とobjects参照権限があるロールの定義です。
 
+この定義はサービスアカウントユーザー（Service Account User）権限とストレージのバケツ作成とobjects参照権限があるロールの定義です。
 カスタムの役割を作成実施
 
 ```sh
@@ -123,12 +123,14 @@ gcloud iam roles describe terraform_role --project [PROJECT_ID]
 
 
 権限を修正・追加する場合、カスタムの役割の更新を実行する必要です。
+
 ```sh
 # カスタムの役割を更新実施。下記のコマンドを実施するため、オーナー権限必要
 gcloud iam roles update terraform_role --project [PROJECT_ID] \
 --file ./_role/terraform_account_role.yaml
 ```
 
+    
 
 本記事の利用ソースコードはこちら
 [https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment](https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment)
@@ -138,7 +140,6 @@ gcloud iam roles update terraform_role --project [PROJECT_ID] \
 DevSamurai 橋本
 
 
-関連記事：  
+関連記事：
 [Terraformツールを使ってGCPリソース管理](https://qiita.com/devs_hd/items/6a715fedf5462af420f2)
 [Terraformスクリプトをモジュール化して、GCPの複数環境に適用](https://qiita.com/devs_hd/items/491b72dec2d4c077d977)
-
