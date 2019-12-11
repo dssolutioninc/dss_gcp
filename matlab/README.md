@@ -38,6 +38,8 @@ RUN mkdir /mcr-install && \
     rm -rf mcr-install
 ```
 
+Matlab runtimeパス　/opt/mcr/v97
+
 ### Dockerfileイメージビルド
 
 ```sh
