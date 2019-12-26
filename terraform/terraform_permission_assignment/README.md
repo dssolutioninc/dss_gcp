@@ -130,6 +130,13 @@ gcloud iam roles update terraform_role --project [PROJECT_ID] \
 --file ./_role/terraform_account_role.yaml
 ```
 
+それから、ユーザーアカウントにロール付与
+
+```sh
+gcloud projects add-iam-policy-binding [PROJECT_ID] \
+  --member user:[USER_EMAIL] \
+  --role projects/[PROJECT_ID]/roles/my_custom_role
+```
     
 
 本記事の利用ソースコードはこちら
