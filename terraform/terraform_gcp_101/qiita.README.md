@@ -130,7 +130,7 @@ terraform apply
 デフォルトは「terraform.tfstate」のファイル名となります。
 Terraformのスクリプトを実施する時に、stateファイルが参照されて、リソースが追加・更新・削除のどちらかが決められる。
 そのため、stateファイルとクラウド上のリソースをいつも同期することは大事です。
-![gcp_terraform_devsamurai_001.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/535698/4aed5fe4-93ff-eb5a-86bf-c410265782f5.png)
+![gcp_terraform_dss_001.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/535698/4aed5fe4-93ff-eb5a-86bf-c410265782f5.png)
 
 
 ### 　2.4 リソース削除
@@ -163,4 +163,5 @@ terraform refresh
 
 
 最後まで読んで頂き、どうも有難う御座います!
-DevSamurai 橋本
+
+DSS 橋本

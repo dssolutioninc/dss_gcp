@@ -105,4 +105,4 @@ gcloud projects add-iam-policy-binding [PROJECT_ID] \
 
 <br>
 ご覧して頂き、どうも有難う御座います!
-DevSamurai Ben
+DSS Ben

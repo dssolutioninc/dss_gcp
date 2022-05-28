@@ -140,11 +140,12 @@ gcloud projects add-iam-policy-binding [PROJECT_ID] \
     
 
 本記事の利用ソースコードはこちら
-[https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment](https://github.com/itdevsamurai/gcp/tree/master/terraform/terraform_permission_assignment)
+[https://github.com/dssolutioninc/dss_gcp/tree/master/terraform/terraform_permission_assignment](https://github.com/dssolutioninc/dss_gcp/tree/master/terraform/terraform_permission_assignment)
 
 
 最後まで読んで頂き、どうも有難う御座います!
-DevSamurai 橋本
+
+DSS 橋本
 
 
 関連記事：
